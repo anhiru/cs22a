@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Lab4: Body Mass Index Calculator</title>
+    <script type="text/javascript">
+        "use strict";
+        var $ = function(id) { return document.getElementById(id); };
+
+        var processEntries = function() { 
+            var isValid = true;
+
+            // get values for user entries 
+            var feet = $("height_feet").value; 
+            var inches = $("height_inches").value; 
+            var pounds = $("weight").value; 
+
+            // check user entries for validity 
+            if (feet == "") {
+                $("height_feet").nextElementSibling.firstChild.nodeValue = "This field is required."; 
+                isValid = false; 
+            } else if (isNaN(feet) || (feet < 0 || feet > 9)) {
+                $("height_feet").nextElementSibling.firstChild.nodeValue = "Enter a number between 0 and 9."; 
+                isValid = false; 
+            } else {
+                $("height_feet").nextElementSibling.firstChild.nodeValue = "";
+            }
+
+            if (inches == "") {
+                $("height_inches").nextElementSibling.firstChild.nodeValue = "This field is required."; 
+                isValid = false; 
+            } else if (isNaN(inches) || (inches < 0 || inches > 12)) {
+                $("height_inches").nextElementSibling.firstChild.nodeValue = "Enter a number between 0 and 12."; 
+                isValid = false; 
+            } else {
+                $("height_inches").nextElementSibling.firstChild.nodeValue = "";
+            }
+
+            if (pounds == "") {
+                $("weight").nextElementSibling.firstChild.nodeValue = "This field is required."; 
+                isValid = false; 
+            } else if (isNaN(pounds) || (pounds <= 0 || pounds >= 1500)) {
+                $("weight").nextElementSibling.firstChild.nodeValue = "Enter a positive number below 1500."; 
+                isValid = false; 
+            } else {
+                $("weight").nextElementSibling.firstChild.nodeValue = "";
+            }
+
+            // submit the form if all fields are valid 
+            if (isValid == true) {
+                var total_height = parseFloat(feet) * 12 + parseFloat(inches);
+                var bmi = (parseFloat(pounds) * 703) / (total_height * total_height);
+                document.write("<h2>BMI:<br>" + bmi.toFixed(2) + "</h2>");
+            } 
+        };
+
+        var resetForm = function() { 
+            $("bmi_form").reset();
+            $("height_feet").nextElementSibling.firstChild.nodeValue = "*";
+            $("height_inches").nextElementSibling.firstChild.nodeValue = "*"; 
+            $("weight").nextElementSibling.firstChild.nodeValue = "*"; 
+            $("height_feet").focus();
+        }; 
+
+        window.onload = function() {
+            $("calculate").onclick = processEntries; 
+            $("reset_form").onclick = resetForm; 
+            $("height_feet").focus();
+        };
+    </script>
+<body>
+    <main>
+        <h1>Body Mass Index Calculator</h1>
+        <form method="get" name="bmi_form" id="bmi_form"> 
+            <label for="height_feet">Height (ft):</label>
+                <input type="text" name="height_feet" id="height_feet"> 
+                <span>*</span><br>
+            <label for="height_inches">Height (in):</label> 
+                <input type="text" name="height_inches" id="height_inches"> 
+                <span>*</span><br>
+            <label for="weight">Weight (lbs):</label> 
+                <input type="text" name="weight" id="weight"> 
+                <span>*</span><br>
+            <input type="button" id="calculate" value="Calculate"> 
+            <input type="button" id="reset_form" value="Reset"><br>
+        </form> 
+    </main>
+</body>
+</html>
